@@ -16,6 +16,12 @@ type User struct {
 	Authority int    `json:"authority"`
 }
 
+type NewPassword struct {
+	Name    string `json:"name"`
+	OldPass string `json:"old_pass"`
+	NewPass string `json:"new_pass"`
+}
+
 // ginによるユーザの登録
 func RegisterPut(c *gin.Context) {
 	var user User
@@ -56,23 +62,27 @@ func UpdatePassword(c *gin.Context) {
 		return
 	}
 	//ユーザー情報からパスワードを更新する
-	var user User
-	c.BindJSON(&user)
-	if user.Name == "" || user.Password == "" {
+	var newpass NewPassword
+	c.BindJSON(&newpass)
+	if newpass.Name == "" || newpass.NewPass == "" {
 		c.JSON(400, gin.H{
 			"message": "bad request",
 		})
 		return
 	}
-	u, err := users.Get(user.Name)
+	u, err := users.Get(newpass.Name)
 	if err != nil {
 		c.JSON(500, gin.H{
 			"message": "internal server error",
 		})
 		return
 	}
-	if u.Name == jwtdata.Name || u.Authority >= common.ADMIN {
-		user.Authority = u.Authority
+	if (u.Name == jwtdata.Name && checkPassword(&User{Name: newpass.Name, Password: newpass.OldPass})) || u.Authority >= common.ADMIN {
+		user := User{
+			Name:      newpass.Name,
+			Password:  newpass.NewPass,
+			Authority: u.Authority,
+		}
 		if err := hashPassword(&user); err != nil {
 			c.JSON(500, gin.H{
 				"message": "internal server error",
@@ -104,4 +114,16 @@ func hashPassword(user *User) error {
 	}
 	user.Password = string(hash)
 	return nil
+}
+
+// パスワードが一致するかを確認する
+func checkPassword(user *User) bool {
+	if u, err := users.Get(user.Name); err != nil {
+		return false
+	} else {
+		if err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(user.Name+user.Password+config.JWT.Pepper)); err != nil {
+			return false
+		}
+	}
+	return true
 }

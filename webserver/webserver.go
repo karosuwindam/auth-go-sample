@@ -25,5 +25,6 @@ func Start() {
 func setHeader() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Header("Access-Control-Allow-Origin", config.Web.AllowOrigin)
+		c.Header("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
 	}
 }

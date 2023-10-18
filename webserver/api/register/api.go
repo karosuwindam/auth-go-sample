@@ -2,11 +2,16 @@ package register
 
 import "suth-go-sample/webserver/api/common"
 
+const API_NAME = "/register"
+
 func Init() {
-	if err := common.Add("/register", RegisterPut, common.PUT); err != nil {
+	if err := common.Add(API_NAME, RegisterPut, common.PUT); err != nil {
 		panic(err)
 	}
-	if err := common.Add("/register", UpdatePassword, common.POST); err != nil {
+	if err := common.Add(API_NAME, UpdatePassword, common.POST); err != nil {
+		panic(err)
+	}
+	if err := common.Add(API_NAME, common.CommonOption, common.OPTIONS); err != nil {
 		panic(err)
 	}
 }

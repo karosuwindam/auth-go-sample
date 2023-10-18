@@ -5,6 +5,8 @@ import "github.com/caarlos0/env/v6"
 type WebConfig struct {
 	Host string `json:"host" env:"WEB_HOST" envDefault:""`
 	Port string `json:"port" env:"WEB_PORT" envDefault:"8080"`
+	//Access-Control-Allow-Originの設定
+	AllowOrigin string `json:"allow_origin" env:"WEB_ALLOW_ORIGIN" envDefault:"*"`
 }
 
 type DBConfig struct {
@@ -13,9 +15,9 @@ type DBConfig struct {
 }
 
 type JWTConfig struct {
-	LifeTimeHour int    `env:"TOKEN_HOUR_LIFESPAN" envDefault:"24"`    //トークンの有効期限 時間
-	Secret       string `env:"API_SECRET" envDefault:"auth-go-sample"` //トークンのシークレットキー 任意の文字列
-	Pepper       string `env:"PEPPER" envDefault:"auth-go-sample"`
+	LifeTimeHour int    `env:"JWT_TOKEN_HOUR_LIFESPAN" envDefault:"24"`    //トークンの有効期限 時間
+	Secret       string `env:"JWT_API_SECRET" envDefault:"auth-go-sample"` //トークンのシークレットキー 任意の文字列
+	Pepper       string `env:"AUTH_PEPPER" envDefault:"auth-go-sample"`
 }
 
 var Web WebConfig

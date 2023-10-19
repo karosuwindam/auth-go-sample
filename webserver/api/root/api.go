@@ -5,7 +5,7 @@ import (
 )
 
 func Init() {
-	if err := common.Add("/", Hello, common.ALL); err != nil {
+	if err := common.Add("/", Hello, common.ALL-common.OPTIONS); err != nil {
 		panic(err)
 	}
 }

@@ -11,7 +11,4 @@ func Init() {
 	if err := common.Add(API_NAME, LoginGet, common.GET); err != nil {
 		panic(err)
 	}
-	if err := common.Add(API_NAME, LoginOption, common.OPTIONS); err != nil {
-		panic(err)
-	}
 }

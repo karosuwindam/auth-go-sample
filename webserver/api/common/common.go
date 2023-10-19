@@ -45,20 +45,17 @@ func Add(pass string, handler func(c *gin.Context), method int) error {
 }
 
 func Init(pass string, r *gin.Engine) {
-	if pass == "/" {
-		pass = ""
+	if pass == "" {
+		pass = "/"
 	}
+	v1 := r.Group(pass)
 	for _, route := range routes {
-		if route.Pass[:1] != "/" {
-			route.Pass = "/" + route.Pass
-		}
-		route.Pass = pass + route.Pass
-		routePass(r, route)
+		routePass(v1, route)
 	}
 	routes = []Route{}
 }
 
-func routePass(r *gin.Engine, route Route) {
+func routePass(r *gin.RouterGroup, route Route) {
 	if route.Method&GET != 0 {
 		r.GET(route.Pass, route.Handler)
 	}

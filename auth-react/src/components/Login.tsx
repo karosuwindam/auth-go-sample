@@ -8,6 +8,7 @@ export const PostLogin = (name: string, password: string) => {
     .then((res)=> {
         console.log(res);
         localStorage.setItem('token', res.data.token);
+        axios.defaults.headers.common["Authorization"] = "Bearer " + res.data.token;
     }).catch((error) => {
         console.log('通信失敗');
         console.log(error.status);
@@ -17,16 +18,38 @@ export const PostLogin = (name: string, password: string) => {
 export const GetLogin = () => {
     const baseURL:string = process.env.REACT_APP_API_URL+ '/api/v1/';
     const token = localStorage.getItem('token');
-    const getLogin = async () => {
-        try {
-            axios.defaults.headers.common["Authorization"] = "Bearer " + token;
-                const response = await axios.get(baseURL + 'login', );
-            console.log(response);
-        }catch (error){
-            console.log(error);
-        }
-    };
-    getLogin();
+    if (token === null){
+        console.log('token error');
+        return false;
+    }
+    axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+    axios.get(baseURL + 'login', )
+    .then((res)=>{
+        console.log(res);
+        localStorage.setItem('token', res.data.token);
+    }).catch((error) =>{
+        console.log('通信失敗');
+        console.log(error.status);
+        localStorage.removeItem('token');
+    });
+}
+
+export default function GetLoginFunc() {
+    return false;
+};
+
+export const PostLogout = () => {
+    const baseURL:string = process.env.REACT_APP_API_URL+ '/api/v1/';
+       
+    axios.post(baseURL + 'logout')
+    .then((res)=> {
+        console.log(res);
+    }).catch((error) => {
+        console.log('通信失敗');
+        console.log(error.status);
+    });
+    localStorage.removeItem('token');
+    delete axios.defaults.headers.common["Authorization"];
 
 }
 
@@ -65,6 +88,7 @@ export const Login = () => {
     const GetForm = () => {
         GetLogin();
     }
+    
     const TestForm = () => {
         TestSend();
     }
@@ -83,6 +107,9 @@ export const Login = () => {
             </div>
             <div>
                 <button type="button" onClick={GetForm}>GET</button>
+            </div>
+            <div>
+                <button type="button" onClick={PostLogout}>Logout</button>
             </div>
             <hr />
             <div>

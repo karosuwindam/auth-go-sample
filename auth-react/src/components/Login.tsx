@@ -7,8 +7,9 @@ export const PostLogin = (name: string, password: string) => {
     axios.post(baseURL + 'login', {"name": name, "password": password})
     .then((res)=> {
         console.log(res);
-        localStorage.setItem('token', res.data.token);
-        axios.defaults.headers.common["Authorization"] = "Bearer " + res.data.token;
+        const json = res.data;
+        localStorage.setItem('token', json.data.token);
+        axios.defaults.headers.common["Authorization"] = "Bearer " + json.data.token;
     }).catch((error) => {
         console.log('通信失敗');
         console.log(error.status);
@@ -25,8 +26,9 @@ export const GetLogin = () => {
     axios.defaults.headers.common["Authorization"] = "Bearer " + token;
     axios.get(baseURL + 'login', )
     .then((res)=>{
+        const json = res.data;
         console.log(res);
-        localStorage.setItem('token', res.data.token);
+        localStorage.setItem('token', json.data.token);
     }).catch((error) =>{
         console.log('通信失敗');
         console.log(error.status);

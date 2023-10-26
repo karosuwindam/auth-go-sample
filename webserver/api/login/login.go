@@ -23,6 +23,12 @@ type JwtData struct {
 	ext  int64  `json:"ext"`
 }
 
+type UserMessage struct {
+	Name  string `json:"name"`
+	Id    int    `json:"id"`
+	Token string `json:"token"`
+}
+
 // ginによる許可確認
 func LoginOption(c *gin.Context) {
 	c.Header("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
@@ -36,11 +42,12 @@ func LoginOption(c *gin.Context) {
 // ginによるログイン確認
 func LoginGet(c *gin.Context) {
 	//ヘッダからトークンを取得
+	var output UserMessage
 	tokenString := c.Request.Header.Get("Authorization")
 	if tokenString == "" {
 		c.JSON(401, gin.H{
 			"message": "unauthorized",
-			"token":   "",
+			"data":    output,
 		})
 		return
 	}
@@ -49,24 +56,31 @@ func LoginGet(c *gin.Context) {
 	if err != nil {
 		c.JSON(401, gin.H{
 			"message": "unauthorized",
-			"token":   "",
+			"data":    output,
 		})
 		return
 	}
+	output.Token = tokenString
+	//jwtからユーザー情報を取得
+	tmp, _ := UnpackJwt(tokenString)
+	output.Name = tmp.Name
+	output.Id = tmp.Id
+
 	c.JSON(200, gin.H{
 		"message": "ok",
-		"token":   tokenString,
+		"data":    output,
 	})
 }
 
 // ginによるログイン処理
 func LoginPost(c *gin.Context) {
 	var user User
+	var output UserMessage
 	c.BindJSON(&user)
 	if !CheckPassword(&user) {
 		c.JSON(401, gin.H{
 			"message": "unauthorized",
-			"token":   "",
+			"data":    output,
 		})
 		return
 	}
@@ -74,14 +88,19 @@ func LoginPost(c *gin.Context) {
 	if err != nil {
 		c.JSON(500, gin.H{
 			"message": "internal server error",
-			"token":   "",
+			"data":    output,
 		})
 		return
 	}
+	output.Name = user.Name
+	output.Token = token
+	tmp, _ := UnpackJwt(token)
+	output.Id = tmp.Id
 	c.JSON(200, gin.H{
 		"message": "ok",
-		"token":   token,
+		"data":    output,
 	})
+
 }
 
 // ユーザー名とパスワードが一致するかを確認する

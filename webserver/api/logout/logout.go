@@ -33,6 +33,7 @@ func LoginOption(c *gin.Context) {
 func LogoutPost(c *gin.Context) {
 	//ヘッダからトークンを取得
 	tokenString := c.Request.Header.Get("Authorization")
+	output := login.UserMessage{}
 	//jwt情報を確認
 	if tokenString != "" {
 		if j, err := login.UnpackJwt(tokenString); err != nil {
@@ -44,6 +45,6 @@ func LogoutPost(c *gin.Context) {
 	}
 	c.JSON(200, gin.H{
 		"message": "ok",
-		"token":   "",
+		"data":    output,
 	})
 }

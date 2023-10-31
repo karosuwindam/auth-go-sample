@@ -3,7 +3,6 @@ import logo from './logo.svg';
 import './App.css';
 import axios from "axios";
 import { getEnvironmentData } from 'worker_threads';
-import { BrowserRouter } from "react-router-dom";
 import { Router } from './router/Router';
 
 const baseURL:string = process.env.REACT_APP_API_URL+ '/api/v1/';
@@ -38,9 +37,10 @@ function App() {
     //     </a>
     //   </header>
     // </div>
-    <BrowserRouter>
+    <>
       <Router />
-    </BrowserRouter>
+    </>
+    
   );
 }
 

@@ -29,6 +29,8 @@ export const GetLogin = () => {
         const json = res.data;
         console.log(res);
         localStorage.setItem('token', json.data.token);
+        sessionStorage.setItem('user', json.data.name);
+        sessionStorage.setItem('role', json.data.role);
     }).catch((error) =>{
         console.log('通信失敗');
         console.log(error.status);
@@ -51,6 +53,8 @@ export const PostLogout = () => {
         console.log(error.status);
     });
     localStorage.removeItem('token');
+    sessionStorage.removeItem('user');
+    sessionStorage.removeItem('role');
     delete axios.defaults.headers.common["Authorization"];
 
 }
@@ -118,5 +122,38 @@ export const Login = () => {
                 <button type="button" onClick={TestForm}>TEST Send</button>
             </div>
         </form>
+    )
+};
+
+export const LoginPage = () => {
+    const [form, setForm] = useState({
+        name: '',
+        password: ''
+    });
+    const handleForm = (e: any) => {
+        setForm({
+            ...form,
+            [e.target.name]: e.target.value
+        });
+    }
+    return (
+        <form>
+        <div>
+            <label htmlFor="name">名前</label>
+            <input id="name" name="name" type="text" onChange={handleForm}/>
+            <label htmlFor="password">パスワード</label>
+            <input id="password" name="password" type="password" onChange={handleForm}/>
+            <button type="button" onClick={()=>PostLogin(form.name, form.password)}>送信</button>
+        </div>
+        </form>
+    )
+}
+
+export const LogoutPage = () => {
+    return (
+        <div>
+            <button type="button" onClick={PostLogout}>Logout</button>
+        </div>
+    
     )
 };

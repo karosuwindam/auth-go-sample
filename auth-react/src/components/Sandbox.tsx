@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { PostLogin,GetLogin, PostLogout } from "./Login"
+import { PostLogin,GetLogin, PostLogout, LoginPage } from "./Login"
 
 import { useState,useContext, useEffect } from "react";
 
@@ -78,6 +78,8 @@ export const Sandbox = () => {
             {/* <button type="button" onClick={Test}>Test</button> */}
             <li><Link to="/">Top</Link></li>
         </div>
+        <hr />
+        <LoginPage />
         </div>
     )
 };

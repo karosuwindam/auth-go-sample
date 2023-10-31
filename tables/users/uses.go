@@ -64,3 +64,18 @@ func Get(Name string) (User, error) {
 	}
 	return user, nil
 }
+
+func (u *User) ReadAuth() string {
+	switch u.Authority {
+	case 3:
+		return "admin"
+	case 2:
+		return "admin"
+	case 1:
+		return "user"
+	case 0:
+		return "guest"
+	default:
+		return "unknown"
+	}
+}

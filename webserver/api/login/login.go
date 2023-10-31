@@ -15,6 +15,7 @@ import (
 type User struct {
 	Name     string `json:"name"`
 	Password string `json:"password"`
+	Auth     string `json:"auth"`
 }
 
 type JwtData struct {
@@ -26,6 +27,7 @@ type JwtData struct {
 type UserMessage struct {
 	Name  string `json:"name"`
 	Id    int    `json:"id"`
+	Role  string `json:"role"`
 	Token string `json:"token"`
 }
 
@@ -42,7 +44,9 @@ func LoginOption(c *gin.Context) {
 // ginによるログイン確認
 func LoginGet(c *gin.Context) {
 	//ヘッダからトークンを取得
-	var output UserMessage
+	var output UserMessage = UserMessage{
+		Role: "guest",
+	}
 	tokenString := c.Request.Header.Get("Authorization")
 	if tokenString == "" {
 		c.JSON(401, gin.H{
@@ -64,6 +68,12 @@ func LoginGet(c *gin.Context) {
 	//jwtからユーザー情報を取得
 	tmp, _ := UnpackJwt(tokenString)
 	output.Name = tmp.Name
+
+	if u, err := users.Get(tmp.Name); err != nil {
+		output.Role = "guest"
+	} else {
+		output.Role = u.ReadAuth()
+	}
 	output.Id = tmp.Id
 
 	c.JSON(200, gin.H{
@@ -94,6 +104,7 @@ func LoginPost(c *gin.Context) {
 	}
 	output.Name = user.Name
 	output.Token = token
+	output.Role = user.Auth
 	tmp, _ := UnpackJwt(token)
 	output.Id = tmp.Id
 	c.JSON(200, gin.H{
@@ -114,6 +125,7 @@ func CheckPassword(user *User) bool {
 	} else {
 		tmp.Name = u.Name
 		tmp.Password = u.Password
+		user.Auth = u.ReadAuth()
 	}
 	if err := bcrypt.CompareHashAndPassword([]byte(tmp.Password), []byte(user.Name+user.Password+config.JWT.Pepper)); err != nil {
 		return false

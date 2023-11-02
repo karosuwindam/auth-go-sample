@@ -15,5 +15,8 @@
 }
 
 .header {
-  background-color: #61dafb;
+  color: white;
+  width: 100%;
+  position: fixed;
+  text-align: right;
 }

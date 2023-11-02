@@ -4,7 +4,7 @@ import './css/Index.css'
 import { Link } from "react-router-dom";
 // import { PostLogin, GetLogin, PostLogout } from './Login';
 import React, {useState, useReducer , useEffect } from "react";
-import { LoginPage2 } from './Login';
+import { LoginPage,GetLogin } from './Login';
 
 export const Index = () =>{
     // //localStorage内にあるtoken情報が更新した場合に、再レンダリングする
@@ -21,7 +21,7 @@ export const Index = () =>{
             {/* localstorageのtokenがnull出ない場合は、LoginPage */}
             {/* nullの場合は、LogoutPage */}
             {/* {token === null ? <LoginPage /> : <LogoutPage />} */}
-            <LoginPage2 />
+            <LoginPage />
             
           </div>
           <header className="App-header">

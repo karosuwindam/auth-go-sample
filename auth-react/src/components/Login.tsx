@@ -25,6 +25,17 @@ export const PostLogin2 = async (name: string, password: string) => {
     return await axios.post(baseURL + 'login', {"name": name, "password": password})
 }
 
+export const GetLogin2 = async () => {
+    const baseURL:string = process.env.REACT_APP_API_URL+ '/api/v1/';
+    const token = localStorage.getItem('token');
+    if (token === null){
+        console.log('token error');
+        return null;
+    }
+    axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+    return await axios.get(baseURL + 'login', )
+}
+
 export const GetLogin = () => {
     const baseURL:string = process.env.REACT_APP_API_URL+ '/api/v1/';
     const token = localStorage.getItem('token');
@@ -134,7 +145,7 @@ export const Login = () => {
     )
 };
 
-export const LoginPage2 = () => {
+export const LoginPage = () => {
     
     const [form, setForm] = useState({
         name: '',
@@ -150,7 +161,30 @@ export const LoginPage2 = () => {
     const [token, setToken] = useState(false);
     useEffect(() => {
         const tmp = localStorage.getItem('token');
-        setToken(tmp !== null);
+        if (tmp !== null){
+            const result = GetLogin2();
+            result.then((res) => {
+                console.log(res);
+                if (res !== null){
+                    localStorage.setItem('token', res.data.data.token);
+                    sessionStorage.setItem('user', res.data.data.name);
+                    sessionStorage.setItem('role', res.data.data.role);
+                    setToken(true);
+                }else{
+                    setToken(false);
+                }
+            }).catch((error) => {
+                console.log('通信失敗');
+                console.log(error.status);
+                setToken(false);
+            });
+        }else {
+            setToken(false);
+        }
+        // tmp !== null ? 
+        
+        // setToken(true) : 
+        // setToken(false);
     }, [localStorage.getItem('token')]);
     const login = () => {
         //PostLoginの結果がtrueの場合は、tokenをtrueにする
@@ -158,6 +192,8 @@ export const LoginPage2 = () => {
         result.then((res) => {
             console.log(res);
             localStorage.setItem('token', res.data.data.token);
+            sessionStorage.setItem('user', res.data.data.name);
+            sessionStorage.setItem('role', res.data.data.role);
             setToken(true);
         }).catch((error) => {
             console.log('通信失敗');
@@ -187,36 +223,3 @@ export const LoginPage2 = () => {
     
     )
 }
-
-export const LoginPage = () => {
-    const [form, setForm] = useState({
-        name: '',
-        password: ''
-    });
-    const handleForm = (e: any) => {
-        setForm({
-            ...form,
-            [e.target.name]: e.target.value
-        });
-    }
-    return (
-        <form>
-        <div>
-            <label htmlFor="name">名前</label>
-            <input id="name" name="name" type="text" onChange={handleForm}/>
-            <label htmlFor="password">パスワード</label>
-            <input id="password" name="password" type="password" onChange={handleForm}/>
-            <button type="button" onClick={()=>PostLogin(form.name, form.password)}>送信</button>
-        </div>
-        </form>
-    )
-}
-
-export const LogoutPage = () => {
-    return (
-        <div>
-            <button type="button" onClick={PostLogout}>Logout</button>
-        </div>
-    
-    )
-};

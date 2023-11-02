@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { PostLogin,GetLogin, PostLogout, LoginPage } from "./Login"
+import { PostLogin,GetLogin, PostLogout } from "./Login"
 
 import { useState,useContext, useEffect } from "react";
 
@@ -9,6 +9,39 @@ export default function GetLoginFunc() {
     return false;
 };
 
+
+export const LoginPage = () => {
+    const [form, setForm] = useState({
+        name: '',
+        password: ''
+    });
+    const handleForm = (e: any) => {
+        setForm({
+            ...form,
+            [e.target.name]: e.target.value
+        });
+    }
+    return (
+        <form>
+        <div>
+            <label htmlFor="name">名前</label>
+            <input id="name" name="name" type="text" onChange={handleForm}/>
+            <label htmlFor="password">パスワード</label>
+            <input id="password" name="password" type="password" onChange={handleForm}/>
+            <button type="button" onClick={()=>PostLogin(form.name, form.password)}>送信</button>
+        </div>
+        </form>
+    )
+}
+
+export const LogoutPage = () => {
+    return (
+        <div>
+            <button type="button" onClick={PostLogout}>Logout</button>
+        </div>
+    
+    )
+};
 
 export const TestSend = () => {
     const baseURL:string = process.env.REACT_APP_API_URL+ '/api/v1/';

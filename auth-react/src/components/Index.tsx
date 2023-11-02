@@ -2,23 +2,27 @@
 import logo from './img/logo.svg';
 import './css/Index.css'
 import { Link } from "react-router-dom";
-import { LoginPage, LogoutPage } from './Login';
-import { useReducer , useEffect } from "react";
+// import { PostLogin, GetLogin, PostLogout } from './Login';
+import React, {useState, useReducer , useEffect } from "react";
+import { LoginPage2 } from './Login';
 
 export const Index = () =>{
-    //localStorage内にあるtoken情報が更新した場合に、再レンダリングする
-    const [token, setToken] = useReducer((state: any, newState: any) => ({...state, ...newState}), localStorage.getItem('token'));
-    useEffect(() => {
-        setToken(localStorage.getItem('token'));
-    }, [localStorage.getItem('token')]);
+    // //localStorage内にあるtoken情報が更新した場合に、再レンダリングする
+    // const [token, setToken] = useReducer((state: any, newState: any) => ({...state, ...newState}), localStorage.getItem('token'));
+    // useEffect(() => {
+    //     setToken(localStorage.getItem('token'));
+    // }, [localStorage.getItem('token')]);
 
 
     return (
         <div className="App">
           <div className="header">
+            {/*変数情報が含んだLoginPageを表示させる*/}
             {/* localstorageのtokenがnull出ない場合は、LoginPage */}
             {/* nullの場合は、LogoutPage */}
-            {token === null ? <LoginPage /> : <LogoutPage />}
+            {/* {token === null ? <LoginPage /> : <LogoutPage />} */}
+            <LoginPage2 />
+            
           </div>
           <header className="App-header">
             <img src={logo} className="App-logo" alt="logo" />

@@ -1,5 +1,7 @@
 import axios from "axios";
-import { useState,useContext, useEffect } from "react";
+import { error } from "console";
+import { stat } from "fs";
+import { useState,useContext, useEffect, useReducer } from "react";
 
 export const PostLogin = (name: string, password: string) => {
     const baseURL:string = process.env.REACT_APP_API_URL+ '/api/v1/';
@@ -10,11 +12,18 @@ export const PostLogin = (name: string, password: string) => {
         const json = res.data;
         localStorage.setItem('token', json.data.token);
         axios.defaults.headers.common["Authorization"] = "Bearer " + json.data.token;
+        return true;
     }).catch((error) => {
         console.log('通信失敗');
         console.log(error.status);
+        return false;
     });
 };
+export const PostLogin2 = async (name: string, password: string) => {
+    
+    const baseURL:string = process.env.REACT_APP_API_URL+ '/api/v1/';
+    return await axios.post(baseURL + 'login', {"name": name, "password": password})
+}
 
 export const GetLogin = () => {
     const baseURL:string = process.env.REACT_APP_API_URL+ '/api/v1/';
@@ -124,6 +133,60 @@ export const Login = () => {
         </form>
     )
 };
+
+export const LoginPage2 = () => {
+    
+    const [form, setForm] = useState({
+        name: '',
+        password: ''
+    });
+    const handleForm = (e: any) => {
+        setForm({
+            ...form,
+            [e.target.name]: e.target.value
+        });
+    }
+    //localstorageのtoken情報が更新した場合に、再レンダリングする
+    const [token, setToken] = useState(false);
+    useEffect(() => {
+        const tmp = localStorage.getItem('token');
+        setToken(tmp !== null);
+    }, [localStorage.getItem('token')]);
+    const login = () => {
+        //PostLoginの結果がtrueの場合は、tokenをtrueにする
+        const result = PostLogin2(form.name, form.password);
+        result.then((res) => {
+            console.log(res);
+            localStorage.setItem('token', res.data.data.token);
+            setToken(true);
+        }).catch((error) => {
+            console.log('通信失敗');
+            console.log(error.status);
+        });
+    }
+    const logout = () => {
+        PostLogout();
+        setToken(false);
+    }
+    return (
+        //tokenがnullの場合は、ログイン画面を表示する
+        //tokenがnullでない場合は、ログアウト画面を表示する
+        !token ? 
+        <form>
+        <div>
+            <label htmlFor="name">名前</label>
+            <input id="name" name="name" type="text" onChange={handleForm}/>
+            <label htmlFor="password">パスワード</label>
+            <input id="password" name="password" type="password" onChange={handleForm}/>
+            <button type="button" onClick={login}>送信</button>
+        </div>
+        </form>:
+        <div>
+            <button type="button" onClick={logout}>Logout</button>
+        </div>
+    
+    )
+}
 
 export const LoginPage = () => {
     const [form, setForm] = useState({

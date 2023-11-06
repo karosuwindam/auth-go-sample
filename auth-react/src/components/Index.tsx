@@ -16,17 +16,10 @@ export const Index = () =>{
 
     return (
         <div className="App">
-          <div className="header">
-            {/*変数情報が含んだLoginPageを表示させる*/}
-            {/* localstorageのtokenがnull出ない場合は、LoginPage */}
-            {/* nullの場合は、LogoutPage */}
-            {/* {token === null ? <LoginPage /> : <LogoutPage />} */}
-            <LoginPage />
-            
-          </div>
           <header className="App-header">
             <img src={logo} className="App-logo" alt="logo" />
             <Link to="/sandbox" className='App-link'>Sandbox Page</Link>
+            <Link to="/home" className='App-link'>Home Page</Link>
           </header>
         </div>
     )

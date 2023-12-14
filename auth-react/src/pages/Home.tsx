@@ -1,4 +1,4 @@
-import { ViewPage } from "../home/ViewPage";
+import { ViewPage } from "../pages/ViewPage";
 
 export const Home = () => {
   return (

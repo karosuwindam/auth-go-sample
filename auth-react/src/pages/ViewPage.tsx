@@ -1,4 +1,4 @@
-import "../components/css/Index.css";
+import "../public/css/Index.css";
 import { useEffect, useState } from "react";
 import { NotFount } from "./NotFount";
 import { Link } from "react-router-dom";

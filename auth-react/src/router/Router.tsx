@@ -1,10 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Login, LoginPage } from "../components/Login";
-import { Index } from "../components/Index";
-import { Sandbox } from "../components/Sandbox";
-import { Home } from "../home/Home";
-import Page from "../components/Page";
-import { Page1 } from "../home/Page1";
+import { Login, LoginPage } from "../modules/Login";
+import { Index } from "../pages/Index";
+import { Home } from "../pages/Home";
+import { Page } from "../pages/Page";
 
 export const Router = () => {
   return (
@@ -16,9 +14,7 @@ export const Router = () => {
         <Route path="/" element={<Index />} />
         <Route path="/login" element={<Login />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/page1" element={<Page1 />} />
         <Route path="/page" element={<Page />} />
-        <Route path="/sandbox" element={<Sandbox />} />
       </Routes>
     </BrowserRouter>
   );

@@ -12,10 +12,10 @@ import (
 
 func Init(r *gin.Engine) {
 	//
-	root.Init()
-	login.Init()
-	register.Init()
-	logout.Init()
+	root.Init("/")
+	login.Init("/login")
+	register.Init("/register")
+	logout.Init("/logout")
 
 	//
 	common.Init("/api/v1", r)

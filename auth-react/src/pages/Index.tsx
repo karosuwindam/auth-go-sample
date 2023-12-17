@@ -13,6 +13,9 @@ export const Index = () => {
         <Link to="/page" className="App-link">
           Page
         </Link>
+        <Link to="/edit" className="App-link">
+          Edit
+        </Link>
       </header>
     </div>
   );

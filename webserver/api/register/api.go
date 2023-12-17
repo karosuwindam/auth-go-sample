@@ -4,7 +4,7 @@ import "suth-go-sample/webserver/api/common"
 
 const API_NAME = "/register"
 
-func Init() {
+func Init(pass string) {
 	if err := common.Add(API_NAME, RegisterPut, common.PUT); err != nil {
 		panic(err)
 	}

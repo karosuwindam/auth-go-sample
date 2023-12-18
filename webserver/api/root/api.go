@@ -4,8 +4,10 @@ import (
 	"suth-go-sample/webserver/api/common"
 )
 
-func Init(pass string) {
-	if err := common.Add(pass, Hello, common.ALL-common.OPTIONS); err != nil {
+const API_NAME = "/"
+
+func Init() {
+	if err := common.Add(API_NAME, Hello, common.ALL-common.OPTIONS); err != nil {
 		panic(err)
 	}
 }

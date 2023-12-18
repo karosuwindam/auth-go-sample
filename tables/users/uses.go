@@ -65,6 +65,22 @@ func Get(Name string) (User, error) {
 	return user, nil
 }
 
+func GetId(Id int) (User, error) {
+	user := User{}
+	if results := db.First(&user, Id); results.Error != nil {
+		return user, results.Error
+	}
+	return user, nil
+}
+
+func GetAll() ([]User, error) {
+	users := []User{}
+	if results := db.Find(&users); results.Error != nil {
+		return users, results.Error
+	}
+	return users, nil
+}
+
 func (u *User) ReadAuth() string {
 	switch u.Authority {
 	case 3:

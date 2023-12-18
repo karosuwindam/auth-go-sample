@@ -44,11 +44,17 @@ func Add(pass string, handler func(c *gin.Context), method int) error {
 	return nil
 }
 
-func Init(pass string, r *gin.Engine) {
+func Init(pass string, r *gin.Engine, add ...any) {
 	if pass == "" {
 		pass = "/"
 	}
 	v1 := r.Group(pass)
+	for _, a := range add {
+		switch a.(type) {
+		case func():
+			a.(func())()
+		}
+	}
 	for _, route := range routes {
 		routePass(v1, route)
 	}

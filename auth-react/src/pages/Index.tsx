@@ -13,8 +13,8 @@ export const Index = () => {
         <Link to="/page" className="App-link">
           Page
         </Link>
-        <Link to="/edit" className="App-link">
-          Edit
+        <Link to="/user/list" className="App-link">
+          UserList
         </Link>
       </header>
     </div>

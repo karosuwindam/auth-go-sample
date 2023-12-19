@@ -58,3 +58,52 @@ func Read(c *gin.Context) {
 		"message": "unauthorized",
 	})
 }
+
+func ReadList(c *gin.Context) {
+	//ヘッダからトークンを取得
+	jwtdata, err := login.GetJwtUser(c)
+	if err != nil {
+		c.JSON(401, gin.H{
+			"message": "unauthorized",
+		})
+		return
+	}
+	// トークン情報からIDを指定してテーブルからユーザ情報を取得
+	userData, err := users.GetId(jwtdata.Id)
+	if err != nil {
+		c.JSON(500, gin.H{
+			"message": "internal server error",
+		})
+		return
+	}
+	if userData.Authority >= common.ADMIN {
+		if userList, err := makeUserList(); err == nil {
+			c.JSON(200, gin.H{
+				"message": "ok",
+				"data":    userList,
+			})
+			return
+		}
+	}
+	c.JSON(401, gin.H{
+		"message": "unauthorized",
+	})
+
+}
+
+// データベースからユーザ情報をのリストを作成する
+func makeUserList() ([]User, error) {
+	var userList []User
+	if users, err := users.GetAll(); err != nil {
+		return nil, err
+	} else {
+		for i := 0; i < len(users); i++ {
+			userList = append(userList, User{
+				Id:   int(users[i].Model.ID),
+				Name: users[i].Name,
+				Auth: users[i].Authority,
+			})
+		}
+	}
+	return userList, nil
+}

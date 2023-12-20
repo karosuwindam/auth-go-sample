@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"suth-go-sample/config"
 	"suth-go-sample/webserver/api"
+	"suth-go-sample/webserver/webconfig"
 	"time"
 
 	"github.com/gin-contrib/cors"
@@ -13,12 +14,15 @@ import (
 var r *gin.Engine
 
 // ginによるwebサーバの初期化
-func Init() {
+func Init() error {
 	r = gin.Default()
 	// r.Use(setHeader()) // 共通ヘッダーの設定
 	setCORS(r)
-	api.Init(r) // apiの初期化
-
+	api.Init(r)                              // apiの初期化
+	if err := webconfig.Init(); err != nil { //Webサーバ周辺の初期化
+		return err
+	}
+	return nil
 }
 
 func Start() {

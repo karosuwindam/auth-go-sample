@@ -9,6 +9,8 @@ import (
 func main() {
 	config.Init()
 	tables.Init()
-	webserver.Init()
+	if err := webserver.Init(); err != nil {
+		panic(err)
+	}
 	webserver.Start()
 }

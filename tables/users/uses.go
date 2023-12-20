@@ -34,6 +34,9 @@ func Add(Name string, Password string, Authority int) error {
 		Password:  Password,
 		Authority: Authority,
 	}
+	if user.Authority > 3 {
+		return errors.New("invalid authority")
+	}
 	if results := db.Create(&user); results.Error != nil {
 		return results.Error
 	}

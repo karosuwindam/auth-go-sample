@@ -60,10 +60,11 @@ func Create(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "registered",
 		})
+	} else {
+		c.JSON(401, gin.H{
+			"message": "unauthorized",
+		})
 	}
-	c.JSON(401, gin.H{
-		"message": "unauthorized",
-	})
 }
 
 // パスワードをペッパー文字列でハッシュ化する

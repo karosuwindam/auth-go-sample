@@ -1,20 +1,12 @@
 package user
 
 import (
-	"suth-go-sample/config"
 	"suth-go-sample/tables/users"
 	"suth-go-sample/webserver/api/common"
 	"suth-go-sample/webserver/api/login"
 
 	"github.com/gin-gonic/gin"
-	"golang.org/x/crypto/bcrypt"
 )
-
-type CreateUser struct {
-	Name      string `json:"name"`
-	Password  string `json:"password"`
-	Authority int    `json:"authority"`
-}
 
 // ユーザーを作成する
 func Create(c *gin.Context) {
@@ -65,26 +57,4 @@ func Create(c *gin.Context) {
 			"message": "unauthorized",
 		})
 	}
-}
-
-// パスワードをペッパー文字列でハッシュ化する
-func hashPassword(user *CreateUser) error {
-	hash, err := bcrypt.GenerateFromPassword([]byte(user.Name+user.Password+config.JWT.Pepper), bcrypt.DefaultCost)
-	if err != nil {
-		return err
-	}
-	user.Password = string(hash)
-	return nil
-}
-
-// パスワードが一致するかを確認する
-func checkPassword(user *CreateUser) bool {
-	if u, err := users.Get(user.Name); err != nil {
-		return false
-	} else {
-		if err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(user.Name+user.Password+config.JWT.Pepper)); err != nil {
-			return false
-		}
-	}
-	return true
 }

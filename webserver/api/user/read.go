@@ -9,12 +9,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type User struct {
-	Id   int    `json:"id"`
-	Name string `json:"name"`
-	Auth int    `json:"auth"`
-}
-
 // IDを指定してユーザー情報を取得する
 func Read(c *gin.Context) {
 	//ヘッダからトークンを取得
@@ -89,21 +83,4 @@ func ReadList(c *gin.Context) {
 		"message": "unauthorized",
 	})
 
-}
-
-// データベースからユーザ情報をのリストを作成する
-func makeUserList() ([]User, error) {
-	var userList []User
-	if users, err := users.GetAll(); err != nil {
-		return nil, err
-	} else {
-		for i := 0; i < len(users); i++ {
-			userList = append(userList, User{
-				Id:   int(users[i].Model.ID),
-				Name: users[i].Name,
-				Auth: users[i].Authority,
-			})
-		}
-	}
-	return userList, nil
 }

@@ -9,12 +9,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type NewPassword struct {
-	Name    string `json:"name"`
-	OldPass string `json:"old_pass"`
-	NewPass string `json:"new_pass"`
-}
-
 func Update(c *gin.Context) {
 	// ToDo: ユーザー情報を更新する Admin用
 	c.JSON(200, gin.H{
@@ -53,7 +47,7 @@ func UpdateById(c *gin.Context) {
 	//受け取ったJSONからユーザー情報を取得
 	var newpass NewPassword
 	c.BindJSON(&newpass)
-	if newpass.Name == "" || newpass.NewPass == "" {
+	if newpass.NewPass == "" {
 		c.JSON(400, gin.H{
 			"message": "bad request",
 		})

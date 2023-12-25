@@ -1,6 +1,7 @@
 package user
 
 import (
+	"errors"
 	"suth-go-sample/config"
 	"suth-go-sample/tables/users"
 
@@ -17,6 +18,11 @@ type User struct {
 	Id   int    `json:"id"`
 	Name string `json:"name"`
 	Auth int    `json:"auth"`
+}
+
+type NewPassword struct {
+	OldPass string `json:"old_pass"`
+	NewPass string `json:"new_pass"`
 }
 
 // パスワードをペッパー文字列でハッシュ化する
@@ -61,5 +67,25 @@ func makeUserList() ([]User, error) {
 // idとユーザと新旧パスワードを指定してパスワードを更新する
 func updatePassword(id int, user *NewPassword) error {
 	//ToDo: パスワードの更新処理を実装する
+	if u, err := users.GetId(id); err != nil {
+		return err
+	} else {
+		tmpuser := CreateUser{
+			Name:      u.Name,
+			Password:  user.OldPass,
+			Authority: u.Authority,
+		}
+		if checkPassword(&tmpuser) {
+			tmpuser.Password = user.NewPass
+			if err := hashPassword(&tmpuser); err != nil {
+				return err
+			}
+			if err := users.Update(id, tmpuser.Password); err != nil {
+				return err
+			}
+		} else {
+			return errors.New("password is not match")
+		}
+	}
 	return nil
 }

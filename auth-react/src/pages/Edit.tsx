@@ -1,6 +1,20 @@
 import axios from "axios";
 import { ViewPage } from "./ViewPage";
 import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { GetUser } from "../modules/UserEdit";
+
+export const UserView = () => {
+  const params = useParams<{ id: string }>();
+  return (
+    <ViewPage roles={["admin", "user"]}>
+      <h1>User View {params.id}</h1>
+      <Link to="/user/list" className="App-link">
+        back to list
+      </Link>
+    </ViewPage>
+  );
+};
 
 export const UserList = () => {
   const [data, setData] = useState([]);
@@ -67,7 +81,11 @@ export const UserList = () => {
                 <td>{user.id}</td>
                 <td>{user.name}</td>
                 <td>{user.role}</td>
-                <th>view</th>
+                <th>
+                  <Link to={"/user/" + user.id} className="App-link">
+                    view
+                  </Link>{" "}
+                </th>
                 <th>edit</th>
               </tr>
             ))}

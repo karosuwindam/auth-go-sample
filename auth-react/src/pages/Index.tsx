@@ -16,6 +16,9 @@ export const Index = () => {
         <Link to="/user/list" className="App-link">
           UserList
         </Link>
+        <Link to="/sandbox" className="App-link">
+          Sandbox
+        </Link>
       </header>
     </div>
   );

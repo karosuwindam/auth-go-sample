@@ -66,7 +66,6 @@ func makeUserList() ([]User, error) {
 
 // idとユーザと新旧パスワードを指定してパスワードを更新する
 func updatePassword(id int, user *NewPassword) error {
-	//ToDo: パスワードの更新処理を実装する
 	if u, err := users.GetId(id); err != nil {
 		return err
 	} else {

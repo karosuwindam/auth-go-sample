@@ -1,5 +1,5 @@
 .container {
-  margin: 40px;
+  margin: 10px;
 }
 
 .spacer {
@@ -7,5 +7,6 @@
 }
 
 button {
-  margin-left: 170px;
+  margin-left: 10px;
+  margin-right: 10px;
 }

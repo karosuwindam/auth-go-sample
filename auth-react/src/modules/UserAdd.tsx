@@ -70,41 +70,30 @@ export const UserAdd: React.FC = () => {
   return (
     <div className="container">
       <form onSubmit={handleSubmit}>
-        <div>
-          <div className="spacer" />
-          <label>名前：</label>
-          <input
-            type="text"
-            onChange={handleNameChange}
-            name=""
-            id=""
-            value={name}
-          />
-        </div>
-        <div>
-          <div className="spacer" />
-          <label>パスワード：</label>
-          <input
-            type="password"
-            onChange={handlePasswordChange}
-            name=""
-            id=""
-            value={password}
-          />
-        </div>
-        <div>
-          <div className="spacer" />
-          <label>権限：</label>
-          <select onChange={(e) => handleChange(e)}>
-            {mAuth.map((auth) => (
-              <option value={auth.id}>{auth.name}</option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <div className="spacer" />
-          <input type="submit" value="Submit" />
-        </div>
+        <div className="spacer" />
+        <label>名前：</label>
+        <input
+          type="text"
+          onChange={handleNameChange}
+          name=""
+          id=""
+          value={name}
+        />
+        <label>パスワード：</label>
+        <input
+          type="password"
+          onChange={handlePasswordChange}
+          name=""
+          id=""
+          value={password}
+        />
+        <label>権限：</label>
+        <select onChange={(e) => handleChange(e)}>
+          {mAuth.map((auth) => (
+            <option value={auth.id}>{auth.name}</option>
+          ))}
+        </select>
+        <input type="submit" value="追加" />
       </form>
     </div>
   );

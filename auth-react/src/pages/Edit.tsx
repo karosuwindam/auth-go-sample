@@ -2,6 +2,7 @@ import axios from "axios";
 import { ViewPage } from "./ViewPage";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { UserAdd } from "../modules/UserAdd";
 import { GetUser } from "../modules/UserEdit";
 
 export const UserView = () => {
@@ -14,6 +15,22 @@ export const UserView = () => {
       </Link>
     </ViewPage>
   );
+};
+
+const UserDelete = (id: number) => {
+  const baseURL: string = process.env.REACT_APP_API_URL + "/api/v1/";
+  const token = localStorage.getItem("token");
+  if (token === null) {
+    console.log("token error");
+    return null;
+  }
+  axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+  if (window.confirm("削除しますか？")) {
+    axios.delete(baseURL + "user/" + id).then((res) => {
+      console.log(res);
+      window.alert("削除しました");
+    });
+  }
 };
 
 export const UserList = () => {
@@ -63,6 +80,7 @@ export const UserList = () => {
   return (
     <ViewPage roles={["admin"]}>
       <h1>User List</h1>
+      <UserAdd />
       {/*dataがnull以外の時 */}
       {data && (
         <table>
@@ -71,6 +89,7 @@ export const UserList = () => {
               <th>id</th>
               <th>name</th>
               <th>role</th>
+              <th></th>
               <th></th>
               <th></th>
             </tr>
@@ -87,6 +106,9 @@ export const UserList = () => {
                   </Link>{" "}
                 </th>
                 <th>edit</th>
+                <th>
+                  <button onClick={() => UserDelete(user.id)}>delete</button>
+                </th>
               </tr>
             ))}
           </tbody>

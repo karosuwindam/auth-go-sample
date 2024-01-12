@@ -39,7 +39,7 @@ func TestUsers(t *testing.T) {
 			t.Fatal("user authority is not 1")
 		}
 	}
-	if err := users.Update(1, "test2"); err != nil {
+	if err := users.Update(1, "test2", -1); err != nil {
 		t.Fatal(err)
 	}
 	if user, err := users.Get("test"); err != nil {
@@ -53,6 +53,22 @@ func TestUsers(t *testing.T) {
 		}
 		if user.Authority != 1 {
 			t.Fatal("user authority is not 1")
+		}
+	}
+	if err := users.Update(1, "", 2); err != nil {
+		t.Fatal(err)
+	}
+	if user, err := users.Get("test"); err != nil {
+		t.Fatal(err)
+	} else {
+		if user.Name != "test" {
+			t.Fatal("user name is not test")
+		}
+		if user.Password != "test2" {
+			t.Fatal("user password is not test2")
+		}
+		if user.Authority != 2 {
+			t.Fatal("user authority is not 2")
 		}
 	}
 	if err := users.Delete(1); err != nil {

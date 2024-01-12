@@ -50,12 +50,17 @@ func Delete(Id int) error {
 	return nil
 }
 
-func Update(Id int, Password string) error {
+func Update(Id int, Password string, Authority int) error {
 	user := User{}
 	if results := db.First(&user, Id); results.Error != nil {
 		return results.Error
 	}
-	user.Password = Password
+	if Password != "" {
+		user.Password = Password
+	}
+	if Authority != -1 {
+		user.Authority = Authority
+	}
 	db.Save(&user)
 	return nil
 }

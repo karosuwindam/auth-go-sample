@@ -9,9 +9,9 @@ func Init() {
 		panic(err)
 	}
 	// ToDo: ユーザー情報を更新する Admin用
-	// if err := common.Add(API_NAME, Update, common.POST); err != nil {
-	// 	panic(err)
-	// }
+	if err := common.Add(API_NAME, Update, common.POST); err != nil {
+		panic(err)
+	}
 	if err := common.Add(API_NAME+"/:id", Read, common.GET); err != nil {
 		panic(err)
 	}

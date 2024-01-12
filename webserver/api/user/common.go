@@ -25,6 +25,13 @@ type NewPassword struct {
 	NewPass string `json:"new_pass"`
 }
 
+type UpdateUser struct {
+	Id        int    `json:"id"`
+	Name      string `json:"name"`
+	Password  string `json:"password"`
+	Authority int    `json:"authority"`
+}
+
 // パスワードをペッパー文字列でハッシュ化する
 func hashPassword(user *CreateUser) error {
 	hash, err := bcrypt.GenerateFromPassword([]byte(user.Name+user.Password+config.JWT.Pepper), bcrypt.DefaultCost)
@@ -64,6 +71,11 @@ func makeUserList() ([]User, error) {
 	return userList, nil
 }
 
+// ToDo: ユーザー情報を更新する Admin用
+func updateUserData(user *UpdateUser) (bool, error) {
+	return true, nil
+}
+
 // idとユーザと新旧パスワードを指定してパスワードを更新する
 func updatePassword(id int, user *NewPassword) error {
 	if u, err := users.GetId(id); err != nil {
@@ -79,7 +91,7 @@ func updatePassword(id int, user *NewPassword) error {
 			if err := hashPassword(&tmpuser); err != nil {
 				return err
 			}
-			if err := users.Update(id, tmpuser.Password); err != nil {
+			if err := users.Update(id, tmpuser.Password, -1); err != nil {
 				return err
 			}
 		} else {

@@ -10,10 +10,51 @@ import (
 )
 
 func Update(c *gin.Context) {
-	// ToDo: ユーザー情報を更新する Admin用
-	c.JSON(200, gin.H{
-		"message": "update",
-	})
+
+	//ヘッダからトークンを取得
+	jwtdata, err := login.GetJwtUser(c)
+	if err != nil {
+		c.JSON(401, gin.H{
+			"message": "unauthorized",
+		})
+		return
+	}
+	// トークン情報からIDを指定してテーブルからユーザ情報を取得
+	userData, err := users.GetId(jwtdata.Id)
+	if err != nil {
+		c.JSON(500, gin.H{
+			"message": "internal server error",
+		})
+		return
+	}
+	//受け取ったJSONからユーザー情報を取得
+	var updateUser UpdateUser
+	c.BindJSON(&updateUser)
+
+	if userData.Authority >= common.ADMIN {
+		flag := false
+		// ユーザー情報を更新する Admin用
+		if flag, err = updateUserData(&updateUser); err != nil {
+			c.JSON(500, gin.H{
+				"message": "internal server error",
+			})
+			return
+		}
+		if flag {
+			c.JSON(200, gin.H{
+				"message": "update",
+			})
+		} else {
+			c.JSON(200, gin.H{
+				"message": "no update",
+			})
+		}
+	} else {
+		c.JSON(401, gin.H{
+			"message": "unauthorized",
+		})
+	}
+
 }
 
 func UpdateById(c *gin.Context) {

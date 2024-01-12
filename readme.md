@@ -28,7 +28,7 @@
 |/app/v1/login|POST|受け取ったJSONデータからユーザ認証を実施してトークン情報を返す|
 |/app/v1/logout|POST|受け取ったJSONデータからユーザのログアウト処理を実施|
 |/app/v1/user|PUT|受け取ったJSONデータからユーザ登録を実施|adminのみ
-|/app/v1/user|POST|受け取ったJSONデータからユーザ登録を更新|adminと特定ユーザのみ|未実装|
+|/app/v1/user|POST|受け取ったJSONデータからユーザ登録を更新|admin|未実装|
 |/app/v1/user/[:id]GET|id情報をもとにしたユーザ情報の取得|adminと特定ユーザのみ
 |/app/v1/user/[:id]POST|id情報をもとにユーザ情報を更新|admin用
 |/app/v1/user/[:id]|DELETE|id情報をもとにユーザ情報を削除|admin用で自分以外を削除

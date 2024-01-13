@@ -89,7 +89,7 @@ func UpdatePassword(c *gin.Context) {
 			})
 			return
 		}
-		if err := users.Update(int(u.Model.ID), user.Password); err != nil {
+		if err := users.Update(int(u.Model.ID), user.Password, -1); err != nil {
 			c.JSON(500, gin.H{
 				"message": "internal server error",
 			})

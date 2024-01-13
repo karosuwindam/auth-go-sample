@@ -73,11 +73,32 @@ func TestUserCommon(t *testing.T) {
 		t.Error("updatePassword error")
 	}
 	t.Log("test updatePassword return ok")
+
 	if !checkPassword(&CreateUser{Name: name, Password: nUserPass.NewPass}) {
 		t.Error("updatePassword error")
 	}
 	t.Log("test updatePassword checkPassword ok")
 	fmt.Println("test updatePassword ok")
+	upUser := UpdateUser{
+		Id:        1,
+		Name:      name,
+		Password:  pass,
+		Authority: common.USER,
+	}
+	if ok, err := updateUserData(&upUser); ok && err == nil {
+		if u, err := users.GetId(1); err == nil {
+			if u.Authority != upUser.Authority {
+				t.Error("user Authority Not Update")
+			}
+			if u.Password != upUser.Password {
+				t.Error("user Password Not Update")
+
+			}
+		}
+	} else {
+		t.Error("user Update error")
+	}
+	fmt.Println("test user update ok")
 	fmt.Println("test user common end")
 
 }

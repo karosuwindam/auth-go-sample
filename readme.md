@@ -33,8 +33,6 @@
 |/app/v1/user/[:id]POST|id情報をもとにユーザ情報を更新|admin用
 |/app/v1/user/[:id]|DELETE|id情報をもとにユーザ情報を削除|admin用で自分以外を削除
 |/app/v1/user/list|GET|ユーザのリストを取得|admin用
-|/app/v1/register|PUT|受け取ったJSONデータからユーザ登録を実施|
-|/app/v1/register|POST|受け取ったJSONデータからユーザ情報を更新|
 
 以下のWebページの構成は以下の通りとなる
 |API|説明|備考|

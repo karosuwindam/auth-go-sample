@@ -2,6 +2,7 @@ package user
 
 import (
 	"errors"
+	"fmt"
 	"suth-go-sample/config"
 	"suth-go-sample/tables/users"
 
@@ -71,9 +72,38 @@ func makeUserList() ([]User, error) {
 	return userList, nil
 }
 
-// ToDo: ユーザー情報を更新する Admin用
+// ユーザー情報を更新する Admin用
 func updateUserData(user *UpdateUser) (bool, error) {
-	return true, nil
+	if u, err := users.GetId(user.Id); err != nil {
+		return false, err
+	} else if user.Name == u.Name {
+		newUser := CreateUser{
+			Name:      u.Name,
+			Password:  "",
+			Authority: u.Authority,
+		}
+		flag := (user.Password != "") || (user.Authority != newUser.Authority)
+		if user.Password != "" {
+			newUser.Password = user.Password
+			if err = hashPassword(&newUser); err != nil {
+				return false, err
+			}
+			user.Password = newUser.Password
+			fmt.Println("Id=", user.Id, " Name=", user.Name, " Password Update")
+		}
+		if user.Authority != newUser.Authority {
+			newUser.Authority = user.Authority
+			fmt.Println("Id=", user.Id, " Name=", user.Name, " Change Authority=", user.Authority)
+		}
+		if flag {
+			err = users.Update(user.Id, newUser.Password, newUser.Authority)
+			if err != nil {
+				return false, err
+			}
+		}
+		return true, nil
+	}
+	return false, nil
 }
 
 // idとユーザと新旧パスワードを指定してパスワードを更新する

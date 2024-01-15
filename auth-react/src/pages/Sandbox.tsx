@@ -16,6 +16,7 @@ export const Sandbox = () => {
       <Link to="/" className="App-link">
         back to index
       </Link>
+      <button>test</button>
     </div>
   );
 };

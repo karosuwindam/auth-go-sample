@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Update(c *gin.Context) {
+func (a *API) PostUserUpdate(c *gin.Context) {
 
 	//ヘッダからトークンを取得
 	jwtdata, err := login.GetJwtUser(c)
@@ -57,7 +57,7 @@ func Update(c *gin.Context) {
 
 }
 
-func UpdateById(c *gin.Context) {
+func (a *API) PostUpdateUserById(c *gin.Context) {
 	// ToDo: Idを指定してユーザー情報を更新する UserとAdmin用
 
 	//ヘッダからトークンを取得

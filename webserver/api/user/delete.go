@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Delete(c *gin.Context) {
+func (a *API) DeleteUser(c *gin.Context) {
 	//ヘッダからトークンを取得
 	jwtdata, err := login.GetJwtUser(c)
 	if err != nil {

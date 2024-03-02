@@ -9,7 +9,7 @@ import (
 )
 
 // ユーザーを作成する
-func Create(c *gin.Context) {
+func (a *API) PutUserCreate(c *gin.Context) {
 	//ヘッダからトークンを取得
 	jwtdata, err := login.GetJwtUser(c)
 	if err != nil {

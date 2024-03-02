@@ -10,7 +10,7 @@ import (
 )
 
 // IDを指定してユーザー情報を取得する
-func Read(c *gin.Context) {
+func (a *API) GetUserRead(c *gin.Context) {
 	//ヘッダからトークンを取得
 	jwtdata, err := login.GetJwtUser(c)
 	if err != nil {
@@ -53,7 +53,7 @@ func Read(c *gin.Context) {
 	})
 }
 
-func ReadList(c *gin.Context) {
+func (a *API) GetUserReadList(c *gin.Context) {
 	//ヘッダからトークンを取得
 	jwtdata, err := login.GetJwtUser(c)
 	if err != nil {

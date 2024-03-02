@@ -31,18 +31,8 @@ type UserMessage struct {
 	Token string `json:"token"`
 }
 
-// ginによる許可確認
-func LoginOption(c *gin.Context) {
-	c.Header("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
-	c.Header("Access-Control-Allow-Headers", "X-POST, Content-Type, Authorization")
-	c.Header("Access-Control-Max-Age", "86400")
-	c.JSON(204, gin.H{
-		"message": "ok",
-	})
-}
-
 // ginによるログイン確認
-func LoginGet(c *gin.Context) {
+func (a *API) GetLogin(c *gin.Context) {
 	//ヘッダからトークンを取得
 	var output UserMessage = UserMessage{
 		Role: "guest",
@@ -83,7 +73,7 @@ func LoginGet(c *gin.Context) {
 }
 
 // ginによるログイン処理
-func LoginPost(c *gin.Context) {
+func (a *API) PostLogin(c *gin.Context) {
 	var user User
 	var output UserMessage
 	c.BindJSON(&user)

@@ -1,4 +1,4 @@
-package user
+package hello
 
 type API struct{}
 
